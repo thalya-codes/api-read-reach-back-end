@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { UserModel } from '../../models/UserModel';
 import { IUser, IUserBaseInfos } from '../../interfaces';
 import { HttpError, INVALID_PASSWORD, INVALID_USER_EMAIL } from '../../errors';

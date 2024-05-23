@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { hash } from 'bcrypt';
+import { hash } from 'bcryptjs';
 import { UserModel } from '../models/UserModel';
 import { SUCCESSFUL_OPERATION } from '../errors';
 import { IUser } from '../interfaces/IUser';
