@@ -17,9 +17,7 @@ export class UserController {
       validateFields({ name, email, password });
       await createUser(response, body);
     } catch (error: any) {
-      response
-        .status(error.status || 500)
-        .json({ message: error.message || error });
+      response.status(error.status || 500).json(error);
     }
   }
 
@@ -31,9 +29,7 @@ export class UserController {
       const user = (await validateCredentials({ email, password })) as any;
       await generateJWT({ id: user.id! }, response);
     } catch (error: any) {
-      response
-        .status(error.status || 500)
-        .json({ message: error?.message || error });
+      response.status(error.status || 500).json(error);
     }
   }
 
