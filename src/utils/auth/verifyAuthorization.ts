@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { verifyToken } from './verifyToken';
-import { NOT_AUTHORIZATED } from '../../errors';
+import { HttpError, NOT_AUTHORIZATED } from '../../errors';
 import { RevokedTokensModel } from '../../models/RevokedTokensModel';
 import { IUser } from '../../interfaces';
 
@@ -11,13 +11,17 @@ export const verifyAuthorization = async (
 ) => {
   const token = request.headers.authorization;
   if (!token) {
-    return response.status(401).json({ message: NOT_AUTHORIZATED });
+    response.status(401).json({ message: NOT_AUTHORIZATED, status: 401 });
+    throw new HttpError(NOT_AUTHORIZATED, 401);
   }
 
   try {
     const decodedInfos = verifyToken({ token, response });
 
-    if (!decodedInfos) return;
+    if (!decodedInfos) {
+      response.status(401).json({ message: NOT_AUTHORIZATED, status: 401 });
+      throw new HttpError(NOT_AUTHORIZATED, 401);
+    }
 
     const {
       payload: { id },
@@ -33,8 +37,9 @@ export const verifyAuthorization = async (
       return;
     }
 
-    return response.status(401).json({ message: NOT_AUTHORIZATED });
+    response.status(401).json({ message: NOT_AUTHORIZATED, status: 401 });
+    throw new HttpError(NOT_AUTHORIZATED, 401);
   } catch (error) {
-    response.status(401).json({ message: NOT_AUTHORIZATED });
+    response.status(401).json({ message: NOT_AUTHORIZATED, status: 401 });
   }
 };
