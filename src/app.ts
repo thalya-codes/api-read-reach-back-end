@@ -9,7 +9,12 @@ connectToDatabase();
 
 const PORT = 3003;
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: '*',
+    allowedHeaders: '*',
+  })
+);
 
 app.use(express.json());
 app.use(routes);
