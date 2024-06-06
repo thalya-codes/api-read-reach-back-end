@@ -8,12 +8,8 @@ const route = Router();
 route.post('/register', UserController.createUser);
 route.post('/login', UserController.login);
 route.post('/logout', UserController.logout);
-route.get('/readings/:userId', verifyAuthorization, ReadingsController.findAll);
-route.delete(
-  '/reading/:id/:userId',
-  verifyAuthorization,
-  ReadingsController.deleteOne
-);
+route.delete('/reading/:id', verifyAuthorization, ReadingsController.deleteOne);
+route.get('/readings', verifyAuthorization, ReadingsController.findAll);
 route.post(
   '/create-reading',
   verifyAuthorization,
