@@ -1,7 +1,11 @@
 import JWT from 'jsonwebtoken';
 import { Response } from 'express';
 import { IGenerateJWTPayload } from '../../interfaces';
-import { FAIL_TOKEN_GENERATION, SUCCESSFUL_OPERATION } from '../../errors';
+import {
+  FAIL_TOKEN_GENERATION,
+  HttpError,
+  SUCCESSFUL_OPERATION,
+} from '../../errors';
 
 export async function generateJWT(
   payload: IGenerateJWTPayload,
@@ -12,10 +16,17 @@ export async function generateJWT(
     process.env.JWT_SECRET as string,
     { expiresIn: '5d', algorithm: 'HS384' },
     (err: Error | null, token: string | undefined) => {
-      console.log(token, process.env.JWT_SECRET);
-      if (err) response.status(500).json({ message: FAIL_TOKEN_GENERATION });
+      if (err) {
+        response
+          .status(500)
+          .json({ status: 500, message: FAIL_TOKEN_GENERATION });
 
-      response.status(200).json({ token, message: SUCCESSFUL_OPERATION });
+        throw new HttpError(FAIL_TOKEN_GENERATION, 500);
+      }
+
+      response
+        .status(200)
+        .json({ status: 200, token, message: SUCCESSFUL_OPERATION });
     }
   );
 }
