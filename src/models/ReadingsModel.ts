@@ -4,6 +4,7 @@ import { IReading } from '../interfaces/IReading';
 export class ReadingsModel {
   static async create({
     title,
+    author,
     start_date,
     end_date,
     rating,
@@ -12,8 +13,8 @@ export class ReadingsModel {
     try {
       return new Promise((resolved, rejected) => {
         connection.query(
-          'INSERT INTO readings (title, start_date, end_date, rating, user_id) VALUES (?, ?, ?, ?, ?)',
-          [title, start_date, end_date, rating, user_id],
+          'INSERT INTO readings (title, author ,start_date, end_date, rating, user_id) VALUES (?, ?, ?, ?, ?, ?)',
+          [title, author, start_date, end_date, rating, user_id],
           (error) => {
             if (error) {
               rejected(error);
